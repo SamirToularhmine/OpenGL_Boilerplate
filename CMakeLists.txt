@@ -3,14 +3,11 @@ cmake_minimum_required (VERSION 2.6)
 project (Tutorials)
 
 find_package(OpenGL REQUIRED)
-
-
+find_package(glfw3 3.3 REQUIRED)
 
 set(ALL_LIBS
 	${OPENGL_LIBRARY}
-	glut
-	GLEW
-	pthread
+  glfw
 )
 
 add_definitions(
@@ -23,10 +20,11 @@ add_definitions(
 
 
 add_executable(code01_dessin 
-	Cours1/code01_dessin.cpp Common/shaders_utilities.cpp
+	vendor/glad/src/glad.c Cours1/code01_dessin.cpp Common/shaders_utilities.cpp
 )
 target_link_libraries(code01_dessin
 	${ALL_LIBS}
+  glfw
 )
 
 

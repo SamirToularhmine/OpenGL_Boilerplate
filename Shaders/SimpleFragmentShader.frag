@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 // Pour le moment on impose juste une couleur à tous les fragments.
 out vec4 color;

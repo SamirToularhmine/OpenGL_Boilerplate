@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 
 // Récuperation de l'attribut 0
 layout(location = 0) in vec3 vertexPosition;

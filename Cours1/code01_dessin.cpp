@@ -1,9 +1,6 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/gl.h>
-#include <GL/glut.h>
-#include <GL/freeglut.h>
-//#include <GL/glu.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <math.h>
 
 #include "../Common/shaders_utilities.hpp"
@@ -61,66 +58,74 @@ void init() {
 
   // Activation de cet attribut (cf layout(0) dans le vertex shader)
   glEnableVertexAttribArray(0);
-  
-}
-
-void Display(void) {
-  // On nettoie l'écran avant de dessiner
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-  // installation des shaders : programme exécuté par la carte graphique
-  glUseProgram(programID);
-  
-  // Le dessin des triangles
-  // primitive graphique : ici les triangles
-  // 0 : car on commence au début des données
-  // 3 : car il y a 3 sommets dans un triangle
-  glDrawArrays(GL_TRIANGLES, 0, 3); 
-
-  // Echange des buffers écriture de l'image et lecture (si double buffering) 
-  glutSwapBuffers();
 }
 
 int main(int argc, char** argv)
 {
 
-  // Pour la création de la fenêtre et du contexte OpenGL pour le dessin
-  glutInit (&argc,argv) ;
+  // On initialise GLFW : retourne un code d'erreur
+  glfwInit();
 
   // Quelle est la compatibilité OpenGL et contexte créé : ici OpenGL 3.3
-  glutInitContextVersion(3, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
+  
   // CORE_PROFILE on n'admet pas les fonctions OpenGL deprecated dans les versions précédentes  (même si elles sont encore disponibles)
-  glutInitContextProfile(GLUT_CORE_PROFILE);
+  glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
   // FORWARD_COMPATIBLE on n'admet pas les fonctions OpenGL qui vont devenir deprecated dans les futures versions ?
-  glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-
-  // Pour définir le mode d'affichage :
-  // Double buffering
-  // Les couleurs seront définies selon le mode RGBA
-  // On active le buffer de profondeur
-  glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH) ;
+  // Création de la fenetre
+  GLFWwindow* window = glfwCreateWindow(500, 500, "Hello World", NULL, NULL);
+  if (!window)
+  {
+      std::cout << "Impossible de créer la fenêtre GLFW" << std::endl;
+      glfwTerminate();
+      return -1;
+  }
 
   // Taille et position à l'écran de la fenêtre créée
-  glutInitWindowSize (500,500) ;
-  glutInitWindowPosition (100, 100) ;
+  glfwSetWindowPos(window, 100, 100);
+  glfwSetWindowSize(window, 500, 500);
 
-  // Enfin création de la fenêtre
-  glutCreateWindow ("GLUT") ;
+  // On attache le contexte actuel OpenGL à la fenêtre
+  glfwMakeContextCurrent(window);
 
-  // Pour gérer les versions OpenGL ...Ne pas réfléchir et bien écrire ces deux lignes
-  glewExperimental = GL_TRUE;
-  GLenum err = glewInit();
+  // On initialise GLAD
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+  {
+      std::cout << "Impossible d'initialiser GLAD" << std::endl;
+      return -1;
+  }
 
   // Fonction qui permet d'initialiser "des choses" si nécessaire (souvent nécessaire).
   init();
 
-  // Déclaration de la fonction de dessin
-  glutDisplayFunc(Display);
+  // Lancement de la boucle GLFW
+  while(!glfwWindowShouldClose(window))
+  {
+    // On nettoie l'écran avant de dessiner
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // Lancement de la boucle GLUT
-  glutMainLoop () ;
+    // installation des shaders : programme exécuté par la carte graphique
+    glUseProgram(programID);
+
+    // Le dessin des triangles
+    // primitive graphique : ici les triangles
+    // 0 : car on commence au début des données
+    // 3 : car il y a 3 sommets dans un triangle
+    glDrawArrays(GL_TRIANGLES, 0, 3); 
+
+    // On échange les buffers avant et arrière
+    glfwSwapBuffers(window);
+
+    // On récupère les events
+    glfwPollEvents();
+  }
+
+  glfwTerminate();
   return 0 ;
   
 }
