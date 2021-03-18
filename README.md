@@ -19,6 +19,10 @@ On commence par installer GLFW :
 
 Ensuite il faut copier le contenu du dosier ```vendor/include``` dans dans le dossier ```/usr/local/include``` afin de pouvoir inclure les headers dans le projet.
 
+On peut par exemple exécuter cette commande à la racine du projet :
+
+```cp -r vendor/glad/* /usr/local/include```
+
 Une fois cela fait, on peut construire le projet en procédant de la manière suivante : 
 
 ```
