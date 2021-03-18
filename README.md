@@ -21,7 +21,7 @@ Ensuite il faut copier le contenu du dosier ```vendor/include``` dans dans le do
 
 On peut par exemple exécuter cette commande à la racine du projet :
 
-```cp -r vendor/glad/* /usr/local/include```
+```cp -r vendor/glad/include/* /usr/local/include```
 
 Une fois cela fait, on peut construire le projet en procédant de la manière suivante : 
 
