@@ -17,6 +17,8 @@ On commence par installer GLFW :
 
 ```sudo apt-get install libglfw3-dev``` (pour linux)
 
+## Ajout des headers
+
 Ensuite il faut copier le contenu du dosier ```vendor/include``` dans dans le dossier ```/usr/local/include``` afin de pouvoir inclure les headers dans le projet.
 
 On peut par exemple exécuter cette commande à la racine du projet :
